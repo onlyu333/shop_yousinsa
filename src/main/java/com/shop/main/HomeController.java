@@ -60,7 +60,7 @@ public class HomeController {
       model.addAllAttributes(psrv.getGoodsInfo(pvo));
       model.addAttribute("imglist", list);
       model.addAttribute("pagevo", pagevo);
-
+      System.out.println("깃바보");
       return "bbs/main";
    }
 
