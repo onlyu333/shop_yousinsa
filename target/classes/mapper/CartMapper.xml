@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.shop.dao.IF_CartDAO">
+	<!-- 카트 추가 -->
+	<insert id="addCart">
+	
+		insert into pcart values(pcart_seq.nextval,#{mnum},#{pnum},#{pcount}) 
+	
+	</insert>
+	
+	<!-- 카트 삭제 -->
+	<delete id="deleteCart">
+	
+		delete from pcart where cartid = #{cartid}
+	
+	</delete>
+	
+	<!-- 카트 수량 수정 -->
+	<update id="modifyCount">
+	
+		update pcart set pcount=#{pcount} where cartid = #{cartid}
+	
+	</update>
+	
+	
+	<!-- 카트 목록 -->
+	<select id="getCart" resultType="com.shop.vo.CartVO">
+	
+		select a.cartid, a.mnum, a.pnum, a.pcount, b.pname, b.price
+		from pcart a left outer join pjproduct b on a.pnum = b.pnum
+		where mnum = #{mnum}
+	
+	</select>
+	
+	
+	
+  </mapper>

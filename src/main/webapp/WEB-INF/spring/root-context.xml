@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!--오라클 bean -->
+	<bean
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSource">
+		<property value="oracle.jdbc.driver.OracleDriver"
+			name="driverClassName" />
+		<property value="jdbc:oracle:thin:@localhost:1521:orcl"
+			name="url" />
+		<!-- 오라클 사용자 이름 -->
+		<property value="system" name="username" />
+		<!-- 오라클 사용자 비밀번호 -->
+		<property value="11111111" name="password" />
+	</bean>
+	<!-- mybaits 사용하기 위한 객체를 설정 이것은 스프링이 구동되면서 객체를 만들어서 컨테이너에 등록 시킬 것이다. -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+		id="sqlSessionFactory">
+		 <property name="dataSource" ref="dataSource" />
+	 <property value="classpath:/mapper/*Mapper.xml"
+			name="mapperLocations" />            	 <!-- 메퍼지정 -->
+	</bean>
+	<!-- mybaits 사용하기 위한 객체를 설정 이것은 스프링이 구동되면서 객체를 만들어서 컨테이너에 등록 시킬 것이다. 지금 
+		설정하는 bean(객체)을 dao가 주소를 주입받아서 mybatis에 작업을 요청할 것이다. -->
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	<context:component-scan base-package="com.shop.dao" />
+	<context:component-scan base-package="com.shop.service" />
+	</beans>

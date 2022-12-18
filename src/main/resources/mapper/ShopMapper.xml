@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.shop.dao.IF_MemberDAO">
+   <insert id="insertOne" parameterType="com.shop.vo.MemberVO">
+   
+   insert into pjmember values (pmember_seq.nextval,#{mname},#{mid},#{mpw},#{maddr},#{email},default,default)
+   <!--  default값을 넣어야하는지 아니면 mgrade를 넣어야하는지? -->
+   </insert>
+   <select id="idCheck" resultType="int">
+  	
+  		select count(*) from pjmember where mid = #{mid}
+  	
+  	</select>
+  	<select id="memberLogin" resultType="com.shop.vo.MemberVO">
+      
+         SELECT * FROM pjmember where mid =#{mid} AND mpw = #{mpw}
+      
+      </select>
+          <select id="memberUpdate">
+      update pjmember set
+      mnum=#{mnum},mname=#{mname},mid=#{mid},mpw=#{mpw},maddr=#{maddr},email=#{email},mgrade=#{mgrade},adminCK=#{adminCK} where mid=#{mid}
+   </select>
+   
+   
+   <select id="selectOne" resultType="com.shop.vo.ProductVO">
+      select * from pjmember where mid =#{mid}
+   </select>
+   
+   <delete id="memDel">
+      delete from pjmember where mid=#{mid}
+   </delete>
+</mapper>

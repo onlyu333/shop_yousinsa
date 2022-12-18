@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.shop.dao.IF_ProductDAO">
+
+  <insert id="insertOne" parameterType="com.shop.vo.ProductVO">
+  	
+  		 insert into pjproduct values (pproduct_seq.nextval,#{cate1},#{cate2},#{pname},#{brand},#{price},#{stock},#{pinformation},#{pexplain},default)
+  		 
+
+  	</insert>
+  	<insert id="photoAttach1">
+  	insert into photoAttach1 values((select max(pnum) from pjproduct),#{filename})
+  	</insert>
+<select id="cList" resultType="com.shop.vo.CateVO">
+  	
+  		select * from cate order by cnum
+  	
+  	</select>
+  	<select id="goodsGetList" resultType="com.shop.vo.ProductVO">
+  	<![CDATA[
+ select t.* from (select sub.*, rownum as rnum from (select * from pjproduct order by pnum DESC) sub) t where rnum between #{startNo} and #{endNo}
+ ]]>    
+ <!-- <if test="searchKeyword != null">
+		    
+			   pname like '%' || #{searchKeyword} || '%' and
+			    
+		    </if> -->
+	 <!-- 	     
+		<![CDATA[    
+		    rownum <= #{pageNum} * #{amount} 
+		    )
+		where rn > (#{pageNum} -1) * #{amount}		  	
+  		]]> -->
+  	
+  	</select>
+ <select id="countList" resultType="int">
+select count(*) from pjproduct
+</select>
+<select id="selectOne" resultType="com.shop.vo.ProductVO">
+select * from pjproduct where pnum =#{pnum}
+</select> 
+<select id="selectAttach" resultType="String">
+select filename from photoAttach1 where fnum=#{pnum}
+
+</select> 
+<update id="productUpdate">
+      update pjproduct set cate1=#{cate1},cate2=#{cate2},pname=#{pname},brand=#{brand},price=#{price},stock=#{stock},pinformation=#{pinformation},pexplain=#{pexplain} where pnum=#{pnum}
+   </update> 
+   <delete id="photoDel">
+      delete from photoAttach1  where fnum=#{pnum}
+   </delete>
+    <delete id="productDel">
+      delete from pjproduct  where pnum=#{pnum}
+   </delete>
+   <select id="getGoodsInfo" resultType="com.shop.vo.ProductVO">
+      select a.pnum,a.pname,a.brand,a.price,a.pinformation,a.pexplain, b.fnum, b.filename
+         from pjproduct a inner join photoAttach1 b on a.pnum=b.fnum 
+   </select>
+  </mapper> 
+  
