@@ -51,7 +51,7 @@ public class HomeController {
       if (pagevo.getPage() == null) {
          pagevo.setPage(1);
       }
-      int totalpageCnt = psrv.countList();
+      int totalpageCnt = psrv.countList(); 
       pagevo.setTotalCount(totalpageCnt);
       
       List<ProductVO> list = psrv.getGoodsInfo(pvo);
@@ -60,7 +60,7 @@ public class HomeController {
       model.addAllAttributes(psrv.getGoodsInfo(pvo));
       model.addAttribute("imglist", list);
       model.addAttribute("pagevo", pagevo);
-      System.out.println("깃바보");
+   
       return "bbs/main";
    }
 
